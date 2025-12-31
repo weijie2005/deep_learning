@@ -77,7 +77,7 @@ class MYANN_MODEL(nn.Module):
 
         #3.1. 初始化第二层的w权重参数，b偏置参数为0
         nn.init.xavier_normal_(self.layer2.weight)
-        nn.init.zeros_(self.layer2.bias)
+        nn.init.zeros_(self.layer2.bias)        
 
         #4. 创建输出层，输入2特征，输出2特征
         self.out=nn.Linear(2,2)
@@ -85,9 +85,6 @@ class MYANN_MODEL(nn.Module):
         #4.1. 初始化输出层的w权重参数，b偏置参数为0
         nn.init.uniform_(self.out.weight)
         
-
-
-
 
     def forward(self, x):
         #1. 前向传播，通过第一个隐藏层，并对第一个隐藏层的输出进行ReLU激活函数
@@ -101,9 +98,9 @@ class MYANN_MODEL(nn.Module):
         #3. 传到输出层，并对输出层的输出使用softmax函数
         out_layer = self.out(x_layer2)
         out_layer = torch.softmax(out_layer, dim=1)
-        
-        
+               
         return out_layer
+
 
 if __name__ == '__main__':
     # 实例化神经网络MYANN类对象
@@ -120,9 +117,15 @@ if __name__ == '__main__':
     print("经过神经网络的输出:",output)
     print("经过神经网络的输出形状:",output.shape)
 
+    output_bias=my_ann.out.bias
+    print("输出层的偏置参数:",output_bias)
+    
+    output_weight=my_ann.out.weight
+    print("输出层的权重参数:",output_weight)
+
     # 打印神经网络的参数信息
     summary(my_ann, input_size=(3,),batch_size=8)
 
     # 遍历参数，打印参数名称和参数值
     for name, param in my_ann.named_parameters():
-        print(name, param)
+        print(name, param)  
